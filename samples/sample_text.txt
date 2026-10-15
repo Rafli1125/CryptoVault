@@ -1,0 +1,3 @@
+CryptoVault sample file for byte-based encryption and decryption.
+Text includes numbers 123, punctuation !? and UTF-8 characters: kriptografi, café.
+Use Extended Vigenere or Super Enkripsi to preserve every byte.

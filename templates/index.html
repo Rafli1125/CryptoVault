@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CryptoVault — Sistem Kriptografi</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="identity">
+        <div class="campus-mark">CV</div>
+        <div class="identity-text">
+          <strong>CryptoVault</strong>
+          <span>Sistem Kriptografi</span>
+        </div>
+      </div>
+      <div class="user-area" aria-label="Status sistem">
+        <span class="local-dot"></span>
+        <span>Sistem Aktif</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <button class="top-nav active" data-page="dashboard">▦ &nbsp; Dashboard</button>
+      <button class="top-nav" data-page="encryption">▣ &nbsp; Enkripsi &amp; Dekripsi</button>
+      <button class="top-nav" data-page="algorithms">▤ &nbsp; Algoritma</button>
+      <button class="top-nav" data-page="about">ⓘ &nbsp; Tentang</button>
+    </div>
+  </nav>
+
+  <main class="content">
+      <div id="page-dashboard" class="page-view active-page">
+      <div class="page-heading dashboard-heading">
+        <div>
+          <h2>Dashboard</h2>
+          <p>Ringkasan fitur dan akses cepat ke modul CryptoVault.</p>
+        </div>
+      </div>
+
+      <section class="dashboard-grid">
+        <div class="dashboard-main card">
+          <div class="section-title">
+            <div class="section-icon">⌁</div>
+            <div><h3>Ruang Kriptografi</h3><span>Crypto Processing System</span></div>
+          </div>
+          <p class="dashboard-description">CryptoVault mengintegrasikan delapan algoritma kriptografi dalam satu antarmuka. Pilih algoritma, tentukan operasi enkripsi atau dekripsi, masukkan pesan beserta kunci yang sesuai, lalu periksa hasilnya. Extended Vigenère dan Super Enkripsi mendukung pemrosesan file berbasis byte, termasuk file biner. Algoritma alfabet memproses huruf A–Z saja sesuai karakteristiknya. Buka menu <b>Enkripsi &amp; Dekripsi</b> untuk mulai mencoba, atau kunjungi menu <b>Algoritma</b> untuk mempelajari fungsi setiap metode.</p>
+          <button class="btn btn-primary" data-goto="encryption">MULAI ENKRIPSI &amp; DEKRIPSI</button>
+        </div>
+        <div class="dashboard-side card">
+          <div class="mini-stat"><strong>08</strong><span>Algoritma tersedia</span></div>
+          <div class="mini-stat"><strong>26</strong><span>Alphabet cipher</span></div>
+          <div class="mini-stat"><strong>256</strong><span>Byte processing</span></div>
+        </div>
+      </section>
+
+      <section class="info-grid">
+        <div class="info-card"><div class="info-number">05</div><div><strong>26-Alphabet</strong><span>Vigenere, Auto-Key, Playfair, Affine, Hill</span></div></div>
+        <div class="info-card"><div class="info-number">02</div><div><strong>256-Byte</strong><span>Extended Vigenere &amp; Super Enkripsi</span></div></div>
+      </section>
+    </div>
+
+      <div id="page-encryption" class="page-view">
+      <div class="page-heading">
+        <div><h2>Enkripsi &amp; Dekripsi</h2><p>Pilih algoritma, masukkan pesan atau file, lalu jalankan proses kriptografi.</p></div>
+        <div class="course-badge">CRYPTO PROCESSING</div>
+      </div>
+
+      <section class="workspace card">
+        <div class="section-title">
+          <div class="section-icon">⚿</div>
+          <div><h3>Form Enkripsi &amp; Dekripsi</h3><span>Crypto Processing Workspace</span></div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>ALGORITMA</label><select id="cipher">{% for key,name in ciphers.items() %}<option value="{{key}}">{{name}}</option>{% endfor %}</select></div>
+          <div class="field"><label>MODE INPUT</label><div class="seg"><button id="textMode" class="seg-btn active">Pesan Teks</button><button id="fileMode" class="seg-btn">File</button></div></div>
+        </div>
+        <div id="textPanel" class="field">
+          <label>PLAINTEXT / CIPHERTEXT</label>
+          <textarea id="text" placeholder="Masukkan pesan yang akan dienkripsi atau didekripsi..."></textarea>
+          <small id="inputHint">Untuk cipher alfabet, hanya huruf A–Z yang diproses. Angka, spasi, dan tanda baca diabaikan.</small>
+        </div>
+        <div id="filePanel" class="field hidden">
+          <label>FILE INPUT</label>
+          <div class="drop"><input type="file" id="file"><div class="upload-icon">⇧</div><strong>Pilih file untuk diproses</strong><span>Maksimum 50 MB</span></div>
+          <small id="fileHint">Extended Vigenère dan Super Enkripsi mendukung file biner. Algoritma alfabet memerlukan file teks UTF-8 dan hanya memproses huruf A–Z.</small>
+        </div>
+        <div class="form-grid key-row">
+          <div class="field"><label id="keyLabel">KUNCI</label><input id="key" value="" autocomplete="off" placeholder="Masukkan kunci..."><small id="hint">Kunci berupa huruf alfabet.</small></div>
+        </div>
+        <div class="button-row"><button id="encrypt" class="btn btn-primary">🔒 &nbsp; ENCRYPT</button><button id="decrypt" class="btn btn-secondary">🔓 &nbsp; DECRYPT</button><button id="clear" class="btn btn-outline">RESET</button></div>
+      </section>
+
+      <section class="result card">
+        <div class="result-head">
+          <div class="section-title compact"><div class="section-icon result-icon">✓</div><div><h3>Hasil Proses</h3><span>Output dan representasi Base64</span></div></div>
+          <span id="status" class="status-pill ready"><i></i> READY</span>
+        </div>
+        <div class="result-info"><span id="resultName">Belum ada hasil</span><span id="resultSize"></span></div>
+        <pre id="result">Hasil enkripsi atau dekripsi akan tampil di sini...</pre>
+        <div class="result-footer"><span id="resultNote" class="base64-note">Hasil dapat disalin atau diunduh sebagai file.</span><div class="result-actions"><button id="copy" class="btn btn-outline">COPY</button><button id="download" class="btn btn-primary" disabled>DOWNLOAD HASIL</button></div></div>
+      </section>
+    </div>
+
+      <div id="page-algorithms" class="page-view">
+      <div class="page-heading"><div><h2>Algoritma</h2><p>Algoritma yang tersedia dalam CryptoVault dan fungsi utamanya.</p></div><div class="course-badge">08 ALGORITMA</div></div>
+      <section class="algorithm-grid">
+        <article class="algorithm-card"><div class="algorithm-tag">01</div><h3>Vigenere Cipher</h3><p>Substitusi polialfabetik menggunakan kata kunci berulang pada alfabet 26 karakter.</p><button class="text-link" data-goto="encryption" data-cipher="vigenere">Gunakan algoritma →</button></article>
+        <article class="algorithm-card"><div class="algorithm-tag">02</div><h3>Auto-Key Vigenere</h3><p>Variasi Vigenere dengan perluasan keystream menggunakan plaintext.</p><button class="text-link" data-goto="encryption" data-cipher="autokey">Gunakan algoritma →</button></article>
+        <article class="algorithm-card"><div class="algorithm-tag">03</div><h3>Extended Vigenere</h3><p>Proses berbasis byte 0–255 sehingga dapat digunakan untuk data file biner.</p><button class="text-link" data-goto="encryption" data-cipher="extended">Gunakan algoritma →</button></article>
+        <article class="algorithm-card"><div class="algorithm-tag">04</div><h3>Playfair Cipher</h3><p>Substitusi digraf menggunakan matriks 5×5 dengan penggabungan I/J.</p><button class="text-link" data-goto="encryption" data-cipher="playfair">Gunakan algoritma →</button></article>
+        <article class="algorithm-card"><div class="algorithm-tag">05</div><h3>Affine Cipher</h3><p>Substitusi monoalfabetik dengan parameter a dan b pada aritmetika modulo 26.</p><button class="text-link" data-goto="encryption" data-cipher="affine">Gunakan algoritma →</button></article>
+        <article class="algorithm-card"><div class="algorithm-tag">06</div><h3>Hill Cipher</h3><p>Transformasi blok menggunakan perkalian matriks modulo 26 dengan matriks yang invertibel.</p><button class="text-link" data-goto="encryption" data-cipher="hill">Gunakan algoritma →</button></article>
+        <article class="algorithm-card"><div class="algorithm-tag">07</div><h3>Super Enkripsi</h3><p>Kombinasi Extended Vigenere dan Columnar Transposition sebagai dua tahap enkripsi.</p><button class="text-link" data-goto="encryption" data-cipher="super">Gunakan algoritma →</button></article>
+        <article class="algorithm-card"><div class="algorithm-tag">08</div><h3>Enigma Cipher</h3><p>Simulasi mesin rotor Enigma dengan tiga rotor dan reflector B. Enkripsi dan dekripsi menggunakan konfigurasi posisi awal yang sama.</p><button class="text-link" data-goto="encryption" data-cipher="enigma">Gunakan algoritma →</button></article>
+      </section>
+    </div>
+
+      <div id="page-about" class="page-view">
+      <div class="page-heading"><div><h2>Tentang</h2><p>Informasi singkat mengenai project CryptoVault.</p></div><div class="course-badge">PROJECT INFORMATION</div></div>
+      <section class="about-card card">
+        <div class="about-logo">CV</div>
+        <div><h3>CryptoVault</h3><p>CryptoVault merupakan aplikasi web lokal untuk mendemonstrasikan proses enkripsi dan dekripsi menggunakan beberapa algoritma kriptografi. Aplikasi mendukung input pesan teks serta pemrosesan file pada algoritma berbasis byte.</p></div>
+      </section>
+      <section class="about-grid">
+        <div class="card about-panel"><h3>Informasi Pengembang</h3><dl><dt>Nama</dt><dd>Rafli Haikal</dd><dt>NPM</dt><dd>237006099</dd><dt>Program Studi</dt><dd>Informatika</dd><dt>Fakultas</dt><dd>Teknik</dd></dl></div>
+        <div class="card about-panel"><h3>Teknologi</h3><div class="tech-list"><span>Python</span><span>Flask</span><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Enigma</span><span>Web Lokal</span></div><p>Aplikasi dijalankan secara lokal melalui Flask dan mencakup delapan algoritma.</p></div>
+      </section>
+    </div>
+
+    <footer class="footer"><strong>CryptoVault — UTS Kriptografi</strong><span>Rafli Haikal • 237006099</span></footer>
+  </main>
+</div>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
